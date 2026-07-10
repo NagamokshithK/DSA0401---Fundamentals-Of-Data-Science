@@ -1,0 +1,10 @@
+import numpy as np
+sales_data = np.array([
+    [250, 300, 280],
+    [150, 170, 160],
+    [400, 420, 410]
+])
+print("Sales Data:")
+print(sales_data)
+average_price = np.mean(sales_data)
+print("\nAverage Price of All Products =", average_price)
