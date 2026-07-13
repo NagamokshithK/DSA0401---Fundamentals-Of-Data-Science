@@ -1,0 +1,17 @@
+import numpy as np
+house_data = np.genfromtxt(
+    r"C:\Users\p_kod\OneDrive\Dokumen\Fundamentals of Data Science\houses.csv",
+    delimiter="\t",
+    skip_header=1
+)
+print("House Dataset:")
+print(house_data)
+print("\nShape:", house_data.shape)
+print("\nBedrooms:")
+print(house_data[:,0])
+print("\nSquare Footage:")
+print(house_data[:,1])
+print("\nSale Price:")
+print(house_data[:,2])
+average_price = np.mean(house_data[:,2])
+print("\nAverage Sale Price =", average_price)
