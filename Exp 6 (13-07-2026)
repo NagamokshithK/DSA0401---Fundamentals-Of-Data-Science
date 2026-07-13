@@ -1,0 +1,16 @@
+item_prices = [50, 100, 200]
+quantities = [2, 3, 1]
+discount_rate = 10
+tax_rate = 5
+subtotal = 0
+for i in range(len(item_prices)):
+    subtotal += item_prices[i] * quantities[i]
+print("Subtotal = ₹", subtotal)
+discount = subtotal * (discount_rate / 100)
+print("Discount = ₹", discount)
+price_after_discount = subtotal - discount
+print("Price After Discount = ₹", price_after_discount)
+tax = price_after_discount * (tax_rate / 100)
+print("Tax = ₹", tax)
+total_cost = price_after_discount + tax
+print("Final Total Cost = ₹", total_cost)
