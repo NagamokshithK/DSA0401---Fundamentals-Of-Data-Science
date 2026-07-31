@@ -1,7 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
-study_time = np.array([1,2,3,4,5,6,7,8])
-exam_score = np.array([35,45,50,60,68,75,85,92])
+import pandas as pd
+x = pd.read_csv("Exam.csv")
+study_time = x["Study Time"]
+exam_score = x["Exam Score"]
 correlation = np.corrcoef(study_time, exam_score)
 print("Correlation Matrix")
 print(correlation)
@@ -9,4 +11,5 @@ plt.scatter(study_time, exam_score)
 plt.title("Study Time vs Exam Score")
 plt.xlabel("Study Time (Hours)")
 plt.ylabel("Exam Score")
+plt.grid(True)
 plt.show()
