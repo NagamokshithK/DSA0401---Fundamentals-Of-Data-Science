@@ -1,0 +1,70 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+# Load the Agriculture Crop Yield dataset
+file_path_agriculture = '/content/Agriculture_Crop_Yield.xlsx'
+df_agriculture = pd.read_excel(file_path_agriculture)
+
+# Display the first 5 rows of the DataFrame
+print('First 5 rows of the Agriculture Crop Yield dataset:')
+display(df_agriculture.head())
+# Display basic information about the agriculture dataset
+print('\nInformation about the Agriculture Crop Yield dataset:')
+df_agriculture.info()
+# Display descriptive statistics for the agriculture dataset
+print('\nDescriptive statistics of the Agriculture Crop Yield dataset:')
+display(df_agriculture.describe())
+# Check for missing values in the agriculture dataset
+print('\nMissing values in each column of the Agriculture Crop Yield dataset:')
+display(df_agriculture.isnull().sum())
+numerical_features_agriculture = ['Rainfall_mm', 'Temperature', 'Fertilizer_kg', 'Crop_Yield_kg']
+
+plt.figure(figsize=(15, 10))
+for i, feature in enumerate(numerical_features_agriculture):
+    plt.subplot(2, 2, i + 1)
+    sns.histplot(df_agriculture[feature], kde=True)
+    plt.title(f'Distribution of {feature}')
+    plt.xlabel(feature)
+    plt.ylabel('Frequency')
+plt.tight_layout()
+plt.show()
+plt.figure(figsize=(18, 6))
+
+# Bar plot for average Crop Yield by Rainfall (categorized if needed, or direct if discrete)
+sns.barplot(x='Rainfall_mm', y='Crop_Yield_kg', data=df_agriculture, palette='viridis')
+plt.title('Average Crop Yield by Rainfall')
+plt.xlabel('Rainfall (mm)')
+plt.ylabel('Average Crop Yield (kg)')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(18, 6))
+# Bar plot for average Crop Yield by Temperature
+sns.barplot(x='Temperature', y='Crop_Yield_kg', data=df_agriculture, palette='plasma')
+plt.title('Average Crop Yield by Temperature')
+plt.xlabel('Temperature')
+plt.ylabel('Average Crop Yield (kg)')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(18, 6))
+# Bar plot for average Crop Yield by Fertilizer Usage
+sns.barplot(x='Fertilizer_kg', y='Crop_Yield_kg', data=df_agriculture, palette='magma')
+plt.title('Average Crop Yield by Fertilizer Usage')
+plt.xlabel('Fertilizer Usage (kg)')
+plt.ylabel('Average Crop Yield (kg)')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(10, 6))
+# Bar plot for average Crop Yield by Soil Type
+sns.barplot(x='Soil_Type', y='Crop_Yield_kg', data=df_agriculture, palette='cividis')
+plt.title('Average Crop Yield by Soil Type')
+plt.xlabel('Soil Type')
+plt.ylabel('Average Crop Yield (kg)')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
