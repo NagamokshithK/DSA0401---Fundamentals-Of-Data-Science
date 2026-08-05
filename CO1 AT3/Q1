@@ -1,0 +1,61 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+# Load the dataset
+file_path = '/content/Student_Performance.xlsx'
+df = pd.read_excel(file_path)
+# Display the first 5 rows of the DataFrame
+print('First 5 rows of the dataset:')
+display(df.head())
+# Display basic information about the dataset
+print('\nInformation about the dataset:')
+df.info()
+# Display descriptive statistics
+print('\nDescriptive statistics of the dataset:')
+display(df.describe())
+# Check for missing values
+print('\nMissing values in each column:')
+display(df.isnull().sum())
+# Convert 'Result' column to numerical representation if it's not already.
+# Assuming 'Pass' is 1 and 'Fail' is 0 for numerical analysis.
+# First, check the unique values and their type.
+if df['Result'].dtype == 'object':
+    # Map 'Pass' to 1 and 'Fail' to 0
+    df['Result_Numeric'] = df['Result'].map({'Pass': 1, 'Fail': 0})
+    numerical_features_with_result = ['Attendance', 'Study_Hours', 'Internal_Marks', 'Result_Numeric']
+else:
+    numerical_features_with_result = ['Attendance', 'Study_Hours', 'Internal_Marks', 'Result']
+plt.figure(figsize=(15, 10))
+for i, feature in enumerate(numerical_features_with_result):
+    plt.subplot(2, 2, i + 1)
+    sns.histplot(df[feature], kde=True)
+    plt.title(f'Distribution of {feature}')
+    plt.xlabel(feature)
+    plt.ylabel('Frequency')
+plt.tight_layout()
+plt.show()
+plt.figure(figsize=(18, 6))
+
+# Bar plot for average Attendance by Result
+plt.subplot(1, 3, 1)
+sns.barplot(x='Result', y='Attendance', data=df, palette='viridis')
+plt.title('Average Attendance by Result')
+plt.xlabel('Result')
+plt.ylabel('Average Attendance')
+
+# Bar plot for average Study Hours by Result
+plt.subplot(1, 3, 2)
+sns.barplot(x='Result', y='Study_Hours', data=df, palette='plasma')
+plt.title('Average Study Hours by Result')
+plt.xlabel('Result')
+plt.ylabel('Average Study Hours')
+
+# Bar plot for average Internal Marks by Result
+plt.subplot(1, 3, 3)
+sns.barplot(x='Result', y='Internal_Marks', data=df, palette='magma')
+plt.title('Average Internal Marks by Result')
+plt.xlabel('Result')
+plt.ylabel('Average Internal Marks')
+
+plt.tight_layout()
+plt.show()
