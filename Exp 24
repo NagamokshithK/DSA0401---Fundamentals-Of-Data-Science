@@ -1,0 +1,29 @@
+import pandas as pd
+import numpy as np
+from scipy import stats
+data = pd.read_csv("rare_elements.csv")
+concentration = data["Concentration"]
+sample_size = int(input("Enter Sample Size: "))
+confidence_level = float(input("Enter Confidence Level (e.g., 0.95): "))
+precision = float(input("Enter Desired Precision: "))
+sample = concentration.sample(n=sample_size, random_state=1)
+sample_mean = np.mean(sample)
+sample_std = np.std(sample, ddof=1)
+sem = sample_std / np.sqrt(sample_size)
+margin_error = stats.t.ppf(
+    (1 + confidence_level) / 2,
+    sample_size - 1
+) * sem
+lower = sample_mean - margin_error
+upper = sample_mean + margin_error
+print("\nSample Mean =", round(sample_mean,3))
+print("Standard Deviation =", round(sample_std,3))
+print("Margin of Error =", round(margin_error,3))
+print("\nConfidence Interval")
+print("Lower Limit =", round(lower,3))
+print("Upper Limit =", round(upper,3))
+if margin_error <= precision:
+    print("\nDesired Precision Achieved")
+else:
+    print("\nDesired Precision NOT Achieved")
+    print("Increase the Sample Size.")
