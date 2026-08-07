@@ -1,0 +1,27 @@
+#A/B Testing using Independent Sample t-Test
+import numpy as np
+from scipy import stats
+website_A = np.array([
+4.2, 4.5, 4.8, 5.0, 4.7,
+4.9, 5.1, 4.6, 4.8, 5.0,
+4.9, 4.7, 5.2, 5.1, 4.8
+])
+website_B = np.array([
+5.3, 5.6, 5.8, 5.5, 5.7,
+5.9, 5.4, 5.6, 5.8, 5.5,
+5.7, 5.6, 5.9, 5.8, 5.5
+])
+mean_A = np.mean(website_A)
+mean_B = np.mean(website_B)
+print("Mean Conversion Rate of Website A =", round(mean_A,2))
+print("Mean Conversion Rate of Website B =", round(mean_B,2))
+t_statistic, p_value = stats.ttest_ind(website_A, website_B)
+print("\nT-Statistic =", round(t_statistic,4))
+print("P-Value =", round(p_value,4))
+alpha = 0.05
+if p_value < alpha:
+    print("\nResult: Reject the Null Hypothesis")
+    print("There is a statistically significant difference between Website A and Website B.")
+else:
+    print("\nResult: Fail to Reject the Null Hypothesis")
+    print("There is no statistically significant difference between Website A and Website B.")
