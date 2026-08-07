@@ -1,0 +1,20 @@
+import pandas as pd
+import numpy as np
+from scipy import stats
+reviews = pd.read_csv("customer_reviews.csv")
+ratings = reviews["Rating"]
+mean_rating = np.mean(ratings)
+std_dev = np.std(ratings, ddof=1)
+n = len(ratings)
+sem = stats.sem(ratings)
+confidence_interval = stats.t.interval(
+    confidence=0.95,
+    df=n-1,
+    loc=mean_rating,
+    scale=sem
+)
+print("Average Rating =", round(mean_rating,2))
+print("Standard Deviation =", round(std_dev,2))
+print("\n95% Confidence Interval")
+print("Lower Limit =", round(confidence_interval[0],2))
+print("Upper Limit =", round(confidence_interval[1],2))
