@@ -1,0 +1,100 @@
+import pandas as pd
+import numpy as np
+from sklearn.tree import DecisionTreeRegressor
+
+# Read dataset
+df = pd.read_csv("car_data.csv")
+
+# Separate target variable
+X = df.drop("Price", axis=1)
+y = df["Price"]
+
+# Convert categorical columns to dummy variables
+X = pd.get_dummies(X)
+
+# Create and train CART model
+model = DecisionTreeRegressor(
+    max_depth=4,
+    random_state=42
+)
+
+model.fit(X, y)
+
+# --------------------------------
+# User Input
+# --------------------------------
+
+print("Enter New Car Details")
+
+mileage = float(input("Enter Mileage: "))
+age = float(input("Enter Age of Car: "))
+brand = input("Enter Brand: ")
+engine = input("Enter Engine Type: ")
+
+# Create input DataFrame
+new_car = pd.DataFrame({
+    "Mileage": [mileage],
+    "Age": [age],
+    "Brand": [brand],
+    "Engine_Type": [engine]
+})
+
+# Convert categorical data
+new_car = pd.get_dummies(new_car)
+
+# Match columns with training data
+new_car = new_car.reindex(
+    columns=X.columns,
+    fill_value=0
+)
+
+# --------------------------------
+# Price Prediction
+# --------------------------------
+
+predicted_price = model.predict(new_car)[0]
+
+print("\nPredicted Car Price:",
+      round(predicted_price, 2))
+
+# --------------------------------
+# Decision Path
+# --------------------------------
+
+decision_path = model.decision_path(new_car)
+
+node_indicator = decision_path.indices
+
+tree = model.tree_
+
+print("\nDecision Path:")
+print("----------------")
+
+for node_id in node_indicator:
+
+    if tree.feature[node_id] != -2:
+
+        feature = X.columns[
+            tree.feature[node_id]
+        ]
+
+        threshold = tree.threshold[node_id]
+
+        value = new_car.iloc[0][feature]
+
+        if value <= threshold:
+            condition = (
+                str(feature) +
+                " <= " +
+                str(round(threshold, 2))
+            )
+        else:
+            condition = (
+                str(feature) +
+                " > " +
+                str(round(threshold, 2))
+            )
+
+        print(condition)
+
+print("\nPrediction completed.")
