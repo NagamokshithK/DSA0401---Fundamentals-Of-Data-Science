@@ -1,0 +1,75 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Read CSV dataset
+df = pd.read_csv("soccer_players.csv")
+
+print("Soccer Player Dataset")
+print(df)
+
+# --------------------------------
+# Top 5 Goal Scorers
+# --------------------------------
+
+top_goals = df.sort_values(
+    by="Goals",
+    ascending=False
+).head(5)
+
+print("\nTop 5 Players with Highest Goals:")
+print(top_goals[["Name", "Goals"]])
+
+# --------------------------------
+# Top 5 Highest Salaries
+# --------------------------------
+
+top_salary = df.sort_values(
+    by="Weekly_Salary",
+    ascending=False
+).head(5)
+
+print("\nTop 5 Players with Highest Salaries:")
+print(top_salary[["Name", "Weekly_Salary"]])
+
+# --------------------------------
+# Average Age
+# --------------------------------
+
+average_age = df["Age"].mean()
+
+print("\nAverage Age:",
+      round(average_age, 2))
+
+# --------------------------------
+# Players Above Average Age
+# --------------------------------
+
+above_average = df[df["Age"] > average_age]
+
+print("\nPlayers Above Average Age:")
+print(above_average[["Name", "Age"]])
+
+# --------------------------------
+# Position Distribution
+# --------------------------------
+
+position_count = df["Position"].value_counts()
+
+print("\nPlayers by Position:")
+print(position_count)
+
+# --------------------------------
+# Bar Chart
+# --------------------------------
+
+plt.figure(figsize=(7, 5))
+
+position_count.plot(kind="bar")
+
+plt.title("Distribution of Players by Position")
+plt.xlabel("Position")
+plt.ylabel("Number of Players")
+
+plt.xticks(rotation=0)
+
+plt.show()
