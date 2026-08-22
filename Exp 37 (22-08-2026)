@@ -1,0 +1,78 @@
+import pandas as pd
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+
+# Read dataset
+df = pd.read_csv("customer_segments.csv")
+
+print("Customer Dataset:")
+print(df)
+
+# Features
+features = [
+    "Annual_Spending",
+    "Purchase_Frequency",
+    "Average_Order_Value"
+]
+
+X = df[features]
+
+# Standardization
+scaler = StandardScaler()
+
+X_scaled = scaler.fit_transform(X)
+
+# K-Means
+k = 3
+
+model = KMeans(
+    n_clusters=k,
+    random_state=42,
+    n_init=10
+)
+
+# Train clustering model
+df["Cluster"] = model.fit_predict(X_scaled)
+
+print("\nCustomer Segments:")
+print(
+    df[
+        ["Customer_ID", "Cluster"]
+    ]
+)
+
+# User input
+print("\nEnter New Customer Details")
+
+spending = float(
+    input("Annual Spending: ")
+)
+
+frequency = float(
+    input("Purchase Frequency: ")
+)
+
+order_value = float(
+    input("Average Order Value: ")
+)
+
+# New customer
+new_customer = pd.DataFrame({
+    "Annual_Spending": [spending],
+    "Purchase_Frequency": [frequency],
+    "Average_Order_Value": [order_value]
+})
+
+# Scale
+new_scaled = scaler.transform(
+    new_customer
+)
+
+# Predict cluster
+cluster = model.predict(new_scaled)
+
+print(
+    "\nNew Customer belongs to Cluster:",
+    cluster[0]
+)
