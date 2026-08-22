@@ -1,0 +1,102 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+
+# Read dataset
+df = pd.read_csv(
+    "ecommerce_transactions.csv"
+)
+
+print("E-Commerce Transaction Dataset:")
+print(df)
+
+# Select features
+X = df[
+    ["Total_Spent", "Items_Purchased"]
+]
+
+# Standardize features
+scaler = StandardScaler()
+
+X_scaled = scaler.fit_transform(X)
+
+# Create K-Means model
+model = KMeans(
+    n_clusters=3,
+    random_state=42,
+    n_init=10
+)
+
+# Fit model and assign clusters
+df["Cluster"] = model.fit_predict(
+    X_scaled
+)
+
+# Display results
+print("\nCustomer Cluster Assignment:")
+print(
+    df[
+        ["Customer_ID",
+         "Total_Spent",
+         "Items_Purchased",
+         "Cluster"]
+    ]
+)
+
+# Cluster centers in original scale
+centers = scaler.inverse_transform(
+    model.cluster_centers_
+)
+
+centers_df = pd.DataFrame(
+    centers,
+    columns=[
+        "Total_Spent",
+        "Items_Purchased"
+    ]
+)
+
+print("\nCluster Centers:")
+print(centers_df)
+
+# --------------------------------
+# Scatter Plot
+# --------------------------------
+
+plt.figure(figsize=(8, 6))
+
+for cluster in sorted(
+    df["Cluster"].unique()
+):
+
+    cluster_data = df[
+        df["Cluster"] == cluster
+    ]
+
+    plt.scatter(
+        cluster_data["Total_Spent"],
+        cluster_data["Items_Purchased"],
+        label="Cluster " + str(cluster)
+    )
+
+# Plot cluster centers
+plt.scatter(
+    centers_df["Total_Spent"],
+    centers_df["Items_Purchased"],
+    marker="X",
+    s=200,
+    label="Cluster Centers"
+)
+
+plt.title(
+    "Customer Segmentation Based on Spending"
+)
+
+plt.xlabel("Total Amount Spent")
+plt.ylabel("Number of Items Purchased")
+
+plt.legend()
+
+plt.show()
